@@ -1,5 +1,8 @@
 import app from './app.js'
+import {PORT} from './config.js'
+import {checkConnect} from './db.js'
 
-app.listen(3000)
+app.listen(PORT)
+checkConnect()
 
-console.log('SERVER IS RUNNING ON PORT 3000')
+console.log(`SERVER IS RUNNING ON PORT ${PORT}`)
