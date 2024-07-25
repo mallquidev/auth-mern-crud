@@ -31,9 +31,21 @@ export const login = async(req, res) => {
         const token = await createAccessToken({id: user.id})
         res.cookie(token)
         res.json({
-            message: "User created successfully"
+            message: "User loging successfully"
         })
 
+    } catch (error) {
+        res.status(500).json({message: error.message})
+        console.error(error)
+    }
+}
+
+export const logout = (req, res) =>{
+    try {
+        res.cookie('token', '', {
+            expire: new Date(0)
+        })
+        res.sendStatus(200)
     } catch (error) {
         res.status(500).json({message: error.message})
         console.error(error)
