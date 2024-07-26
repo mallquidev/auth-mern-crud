@@ -51,3 +51,12 @@ export const logout = (req, res) =>{
         console.error(error)
     }
 }
+
+export const profile = (req, res)=> {
+    try {
+        res.send('PROOFILE XDD')
+        console.log('nose')
+    } catch (error) {
+        console.error(error)
+    }
+}
