@@ -9,7 +9,7 @@ export const register = async(req, res) => {
         const [result] = await pool.query('INSERT INTO users (user, email, password) VALUES (?,?,?)', [user, email, passwordHash])
         
         const token = await createAccessToken({id: result.insertId})
-        res.cookie(token)
+        res.cookie('token', token)
         res.json({
             message: "User created successfully"
         })
@@ -29,10 +29,8 @@ export const login = async(req, res) => {
         const isMatch = await bcrypt.compare(password, user.password)
         if(!isMatch) return res.status(203).json({message: 'Unauthorized'})
         const token = await createAccessToken({id: user.id})
-        res.cookie(token)
-        res.json({
-            message: "User loging successfully"
-        })
+        res.cookie('token',token)
+        res.json(token)
 
     } catch (error) {
         res.status(500).json({message: error.message})
@@ -52,10 +50,15 @@ export const logout = (req, res) =>{
     }
 }
 
-export const profile = (req, res)=> {
+export const profile = async(req, res)=> {
     try {
-        res.send('PROOFILE XDD')
-        console.log('nose')
+        console.log(req.user)
+        const [userFound] = await pool.query('SELECT * FROM users WHERE id = ?', [req.user.id])
+        if(!userFound) return res.status(404).json({message: 'user not found'})
+        res.json({
+            id: userFound[0].id,
+            email: userFound[0].email
+        })
     } catch (error) {
         console.error(error)
     }
