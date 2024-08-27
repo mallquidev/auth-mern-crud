@@ -1,9 +1,10 @@
 import {useState} from 'react';
-import {loginRequest} from '../api/auth_api.js'
+import {registerRequest} from '../api/auth_api.js'
 
-function Login() {
+function Register() {
 
   const [formData, setFormData] = useState({
+    user: '',
     email: '',
     password: ''
   })
@@ -19,7 +20,7 @@ function Login() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const response = await loginRequest(formData)
+      const response = await registerRequest(formData)
       console.log(response)
     } catch (error) {
       console.log(error)
@@ -30,8 +31,19 @@ function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900">
       <div className="bg-gray-800 text-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6 text-center">Iniciar Sesión</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center">Register</h1>
         <form className="space-y-4" onSubmit={handleSubmit}>
+            <div>
+            <label htmlFor="usuario" className="block text-sm font-medium mb-1">Usuario</label>
+            <input
+              name="usuario"
+              type="usuario"
+              value={formData.usuario}
+              onChange={handleChange}
+              placeholder="ejemplo@dominio.com"
+              className="w-full px-3 py-2 border border-gray-700 rounded-md bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            </div>
           <div>
             <label htmlFor="email" className="block text-sm font-medium mb-1">Correo Electrónico</label>
             <input
@@ -59,7 +71,7 @@ function Login() {
             type="submit"
             className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded-md text-white font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            Iniciar Sesión
+            Registrase
           </button>
         </form>
       </div>
@@ -67,4 +79,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;
