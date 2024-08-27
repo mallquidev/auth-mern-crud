@@ -2,11 +2,11 @@ import {createPool} from 'mysql2/promise'
 import {HOST, PORTDB, USER, PASSWORD, DATABASE} from './config.js'
 
 const pool = createPool({
-    host: HOST,
-    port: PORTDB,
-    database: DATABASE,
-    user: USER,
-    password: PASSWORD
+    host: 'localhost',
+    port: 3306,
+    database: 'test',
+    user: 'root',
+    password: 'codersql'
 })
 
 async function checkConnect(){

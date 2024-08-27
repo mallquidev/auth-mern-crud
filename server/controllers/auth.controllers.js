@@ -6,7 +6,7 @@ export const register = async(req, res) => {
     try {
         const {user, email, password} = req.body
         const passwordHash = await bcrypt.hash(password, 10)
-        const [result] = await pool.query('INSERT INTO users (user, email, password) VALUES (?,?,?)', [user, email, passwordHash])
+        const [result] = await pool.query('INSERT INTO user (user, email, password) VALUES (?,?,?)', [user, email, passwordHash])
         
         const token = await createAccessToken({id: result.insertId})
         res.cookie('token', token)
@@ -23,7 +23,7 @@ export const register = async(req, res) => {
 export const login = async(req, res) => {
     try {
         const {email, password} = req.body
-        const [userFound] = await pool.query('SELECT * FROM users WHERE email = ?',[email])
+        const [userFound] = await pool.query('SELECT * FROM user WHERE email = ?',[email])
         if (userFound.length === 0) return res.status(404).json({ message: 'Correo no encontrado' })
         const user = userFound[0]
         const isMatch = await bcrypt.compare(password, user.password)
@@ -53,7 +53,7 @@ export const logout = (req, res) =>{
 export const profile = async(req, res)=> {
     try {
         console.log(req.user)
-        const [userFound] = await pool.query('SELECT * FROM users WHERE id = ?', [req.user.id])
+        const [userFound] = await pool.query('SELECT * FROM user WHERE id = ?', [req.user.id])
         if(!userFound) return res.status(404).json({message: 'user not found'})
         res.json({
             id: userFound[0].id,
